@@ -19,7 +19,7 @@
                     <a href="#" @click.prevent="clearForm()" class="btn btn-sm btn-outline-danger">{{buttons.firstAction}}</a>
                 </div>
                 <div class="col-6 text-right">
-                    <a href="#" @click.prevent="firstAction()" class="btn btn-sm btn-outline-primary">{{buttons.secondAction}}</a>
+                    <a href="#" @click.prevent="firstAction()" v-on:keydown.enter="firstAction()" class="btn btn-sm btn-outline-primary">{{buttons.secondAction}}</a>
                 </div>
             </footer>
         </form>
@@ -42,6 +42,7 @@
         methods: {
             clearForm   : function(){
                 document.getElementById('w-form').reset();
+                this.$emit('clearForm');
             },
             firstAction : function(){
                 let erros   = [];
@@ -69,9 +70,7 @@
                     this.$emit('firstAction', data);
                 }else{
                     this.$emit('firstAction', {
-                        data: true,
-                        msg : 'Existem campos vazios',
-                        type: 'alert-warning'
+                        data: true
                     });
                 }
             }
@@ -96,7 +95,8 @@
 
             border: 1px solid #007bffb6 ;
             border-radius: 2px;
-            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5)
+            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+            background-color: #FFF;
         }
 
     .w-required-empty{

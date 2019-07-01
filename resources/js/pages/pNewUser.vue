@@ -5,22 +5,23 @@
             :alerts="alerts"
             :buttons="{firstAction: 'Cancelar', secondAction: 'Salvar'}"
             v-on:firstAction="firstAction"
+            v-on:clearForm="clearForm"
         >
             <div class="form-group">
-                <label for="exampleInputEmail1">Usuário</label>
-                <input v-model="user.name" type="text" class="form-control w-require" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Usuário de acesso">
+                <label for="userName">Usuário</label>
+                <input v-model="user.user" type="text" class="form-control w-require" id="userName" aria-describedby="emailHelp" placeholder="Usuário de acesso">
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Email</label>
-                <input type="email" class="form-control w-require" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email de acesso">
+                <label for="userMail">Email</label>
+                <input v-model="user.mail" type="email" class="form-control w-require" id="userMail" aria-describedby="emailHelp" placeholder="Email de acesso">
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Senha</label>
-                <input type="password" class="form-control w-require" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Senha com 8 digitos ou mais">
+                <label for="userPass">Senha</label>
+                <input v-model="user.pass" type="password" class="form-control w-require" id="userPass" aria-describedby="emailHelp" placeholder="Senha com 8 digitos ou mais">
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Repetir Senha</label>
-                <input type="password" class="form-control w-require" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Repita a senha">
+                <label for="userPass2">Repetir Senha</label>
+                <input v-model="user.pass2" type="password" class="form-control w-require" id="userPass2" aria-describedby="emailHelp" placeholder="Repita a senha">
             </div>
         </w-auth-form>
     </section>
@@ -40,7 +41,10 @@ export default {
                 class   : 'alert-success'
             },
             user    : {
-                name    : ''
+                user    : '',
+                mail    : '',
+                pass    : '',
+                pass2   : ''
             }
         }
     },
@@ -55,7 +59,58 @@ export default {
                     class   : data.type
                 }
             }else{
-                console.log(this.user.name);
+                if(this.user.pass != this.user.pass2){
+                    this.alerts = {
+                        show    : true,
+                        text    : 'As senhas diferem entre si.',
+                        class   : 'alert-warning'
+                    }
+                }else{
+                    fetch('http://localhost:8080/api/user/new', {
+                        method  : 'POST',
+                        headers : {
+                            'data'          : this.user,
+                            'Content-Type'  : 'application/json'
+                        },
+                        body    : JSON.stringify({
+                            'data' : this.user
+                        })
+                    })
+                        .then(response => (response.json()))
+                        .then(responseJSON => {
+                            console.log(responseJSON);
+                            if(responseJSON.status == true){
+                                this.alerts = {
+                                    show    : true,
+                                    text    : 'Usuário cadastrado com sucesso.',
+                                    class   : 'alert-success'
+                                }
+                            }else{
+                                this.alerts = {
+                                    show    : true,
+                                    text    : 'Erro ao cadastrar novo usuáro.',
+                                    class   : 'alert-warning'
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.log("Error", "=>", error);
+                            this.alerts = {
+                                show    : true,
+                                text    : 'Erro ao tentar se conectar ao servidor.',
+                                class   : 'alert-danger'
+                            }
+                        });
+                }
+            }
+        },
+        // Funcao para limpar o formulário e as models
+        clearForm   : function(){
+            this.user = {
+                user    : '',
+                mail    : '',
+                pass    : '',
+                pass2   : ''
             }
         }
     },

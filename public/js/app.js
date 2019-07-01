@@ -1875,6 +1875,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     clearForm: function clearForm() {
       document.getElementById('w-form').reset();
+      this.$emit('clearForm');
     },
     firstAction: function firstAction() {
       var erros = [];
@@ -1904,9 +1905,7 @@ __webpack_require__.r(__webpack_exports__);
         this.$emit('firstAction', data);
       } else {
         this.$emit('firstAction', {
-          data: true,
-          msg: 'Existem campos vazios',
-          type: 'alert-warning'
+          data: true
         });
       }
     }
@@ -1953,6 +1952,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'pNewUser',
@@ -1967,13 +1967,18 @@ __webpack_require__.r(__webpack_exports__);
         "class": 'alert-success'
       },
       user: {
-        name: ''
+        user: '',
+        mail: '',
+        pass: '',
+        pass2: ''
       }
     };
   },
   methods: {
     // Funcao para cadastrar um novo usuario
     firstAction: function firstAction(data) {
+      var _this = this;
+
       console.log('retorno do $emit', '=>', data);
 
       if (data.data == false) {
@@ -1983,8 +1988,59 @@ __webpack_require__.r(__webpack_exports__);
           "class": data.type
         };
       } else {
-        console.log(this.user.name);
+        if (this.user.pass != this.user.pass2) {
+          this.alerts = {
+            show: true,
+            text: 'As senhas diferem entre si.',
+            "class": 'alert-warning'
+          };
+        } else {
+          fetch('http://localhost:8080/api/user/new', {
+            method: 'POST',
+            headers: {
+              'data': this.user,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              'data': this.user
+            })
+          }).then(function (response) {
+            return response.json();
+          }).then(function (responseJSON) {
+            console.log(responseJSON);
+
+            if (responseJSON.status == true) {
+              _this.alerts = {
+                show: true,
+                text: 'Usuário cadastrado com sucesso.',
+                "class": 'alert-success'
+              };
+            } else {
+              _this.alerts = {
+                show: true,
+                text: 'Erro ao cadastrar novo usuáro.',
+                "class": 'alert-warning'
+              };
+            }
+          })["catch"](function (error) {
+            console.log("Error", "=>", error);
+            _this.alerts = {
+              show: true,
+              text: 'Erro ao tentar se conectar ao servidor.',
+              "class": 'alert-danger'
+            };
+          });
+        }
       }
+    },
+    // Funcao para limpar o formulário e as models
+    clearForm: function clearForm() {
+      this.user = {
+        user: '',
+        mail: '',
+        pass: '',
+        pass2: ''
+      };
     }
   },
   mounted: function mounted() {}
@@ -6449,7 +6505,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.w-auth-form[data-v-2a620e30]{\n    width: 480px;\n    height: auto;\n    display: -webkit-box;\n    display: flex;\n    margin: auto;\n}\nform[data-v-2a620e30]{\n        width: 100%;\n        height: auto;\n        padding: 15px;\n        margin: 0;\n\n        border: 1px solid #007bffb6 ;\n        border-radius: 2px;\n        box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5)\n}\n.w-required-empty[data-v-2a620e30]{\n    border: 1px solid red;\n}\n@media (max-width: 640px){\n.w-auth-form[data-v-2a620e30]{\n        width: 80%;\n        height: auto;\n        display: -webkit-box;\n        display: flex;\n        margin: auto;\n}\n}\n", ""]);
+exports.push([module.i, "\n.w-auth-form[data-v-2a620e30]{\n    width: 480px;\n    height: auto;\n    display: -webkit-box;\n    display: flex;\n    margin: auto;\n}\nform[data-v-2a620e30]{\n        width: 100%;\n        height: auto;\n        padding: 15px;\n        margin: 0;\n\n        border: 1px solid #007bffb6 ;\n        border-radius: 2px;\n        box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);\n        background-color: #FFF;\n}\n.w-required-empty[data-v-2a620e30]{\n    border: 1px solid red;\n}\n@media (max-width: 640px){\n.w-auth-form[data-v-2a620e30]{\n        width: 80%;\n        height: auto;\n        display: -webkit-box;\n        display: flex;\n        margin: auto;\n}\n}\n", ""]);
 
 // exports
 
@@ -37998,6 +38054,15 @@ var render = function() {
                 click: function($event) {
                   $event.preventDefault()
                   return _vm.firstAction()
+                },
+                keydown: function($event) {
+                  if (
+                    !$event.type.indexOf("key") &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  return _vm.firstAction()
                 }
               }
             },
@@ -38042,12 +38107,105 @@ var render = function() {
             alerts: _vm.alerts,
             buttons: { firstAction: "Cancelar", secondAction: "Salvar" }
           },
-          on: { firstAction: _vm.firstAction }
+          on: { firstAction: _vm.firstAction, clearForm: _vm.clearForm }
         },
         [
           _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-              _vm._v("Usuário")
+            _c("label", { attrs: { for: "userName" } }, [_vm._v("Usuário")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.user.user,
+                  expression: "user.user"
+                }
+              ],
+              staticClass: "form-control w-require",
+              attrs: {
+                type: "text",
+                id: "userName",
+                "aria-describedby": "emailHelp",
+                placeholder: "Usuário de acesso"
+              },
+              domProps: { value: _vm.user.user },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.user, "user", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "userMail" } }, [_vm._v("Email")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.user.mail,
+                  expression: "user.mail"
+                }
+              ],
+              staticClass: "form-control w-require",
+              attrs: {
+                type: "email",
+                id: "userMail",
+                "aria-describedby": "emailHelp",
+                placeholder: "Email de acesso"
+              },
+              domProps: { value: _vm.user.mail },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.user, "mail", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "userPass" } }, [_vm._v("Senha")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.user.pass,
+                  expression: "user.pass"
+                }
+              ],
+              staticClass: "form-control w-require",
+              attrs: {
+                type: "password",
+                id: "userPass",
+                "aria-describedby": "emailHelp",
+                placeholder: "Senha com 8 digitos ou mais"
+              },
+              domProps: { value: _vm.user.pass },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.user, "pass", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "userPass2" } }, [
+              _vm._v("Repetir Senha")
             ]),
             _vm._v(" "),
             _c("input", {
@@ -38055,73 +38213,25 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.user.name,
-                  expression: "user.name"
+                  value: _vm.user.pass2,
+                  expression: "user.pass2"
                 }
               ],
               staticClass: "form-control w-require",
               attrs: {
-                type: "text",
-                id: "exampleInputEmail1",
+                type: "password",
+                id: "userPass2",
                 "aria-describedby": "emailHelp",
-                placeholder: "Usuário de acesso"
+                placeholder: "Repita a senha"
               },
-              domProps: { value: _vm.user.name },
+              domProps: { value: _vm.user.pass2 },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.user, "name", $event.target.value)
+                  _vm.$set(_vm.user, "pass2", $event.target.value)
                 }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-              _vm._v("Email")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control w-require",
-              attrs: {
-                type: "email",
-                id: "exampleInputEmail1",
-                "aria-describedby": "emailHelp",
-                placeholder: "Email de acesso"
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-              _vm._v("Senha")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control w-require",
-              attrs: {
-                type: "password",
-                id: "exampleInputEmail1",
-                "aria-describedby": "emailHelp",
-                placeholder: "Senha com 8 digitos ou mais"
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-              _vm._v("Repetir Senha")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control w-require",
-              attrs: {
-                type: "password",
-                id: "exampleInputEmail1",
-                "aria-describedby": "emailHelp",
-                placeholder: "Repita a senha"
               }
             })
           ])

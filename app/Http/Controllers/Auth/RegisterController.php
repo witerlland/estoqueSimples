@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -44,7 +45,7 @@ class RegisterController extends Controller
      * Get a validator for an incoming registration request.
      *
      * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @return \Illuminate\ContrTacts\Validation\Validator
      */
     protected function validator(array $data)
     {
@@ -68,5 +69,87 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    public function new(Request $request){
+        $data = $request->data;
+        if(!empty($data)){
+
+            if($this->validateNewUser($data)){
+                try {
+                    $user = User::create([
+                        'name'      => $data['user'],
+                        'full_name' => $data['user'],
+                        'email'     => $data['mail'],
+                        'password'  => Hash::make($data['pass']),
+                        'type'      => 'basic',
+                        'active'    => 'T'
+                    ]);
+
+                    if($user){
+                        return json_encode(array(
+                            "status"    => true,
+                            "response"  => 'Usuario cadastrado com sucesso.'
+                        ));
+                    }else{
+                        return json_encode(array(
+                            "status"    => false,
+                            "response"  => 'Erro ao cadastrar usuario.'
+                        ));
+                    }
+
+                } catch (\PDOException $e) {
+                    //throw $th;
+                    return json_encode(array(
+                        'status'    => false,
+                        'response'  => $e->getMessage()
+                    ));
+                }
+            }else{
+                return json_encode(array(
+                    "status"    => false,
+                    "response"  => 'Algum campo não corresponde ao esperado.'
+                ));
+            }
+
+        }else{
+            return json_encode(array(
+                'status'    => false,
+                'response'  => 'Nenhum dado enviado para cadastro de usuario.'
+            ));
+        }
+    }
+
+    private function validateNewUser(array $user) : bool {
+        $errors = array();
+        if(
+            !is_string($user['user'])   ||
+            empty($user['user'])        
+        ){
+            array_push($errors, 'user');
+        }
+
+        if(
+            !is_string($user['pass'])   ||
+            empty($user['pass'])        ||
+            strlen($user['pass']) < 8
+        ){
+            array_push($errors, 'pass');
+        }
+
+        if(
+            !is_string($user['mail'])   ||
+            empty($user['mail'])        
+        ){
+            array_push($errors, 'mail');
+        }
+
+        $errorsCount = count($errors);
+
+        if($errorsCount > 0){
+            return false;
+        }else{
+            return true;
+        }
     }
 }
