@@ -79,7 +79,7 @@
         }
     }
 </script>
-<style scoped>
+<style>
     .w-auth-form{
         width: 480px;
         height: auto;
