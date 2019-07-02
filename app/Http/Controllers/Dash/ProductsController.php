@@ -33,7 +33,9 @@ class ProductsController extends Controller
                         'status'    => true,
                         'response'  => Product::where([
                             ['user_id', '=', $user->id]
-                        ])->get()
+                        ])->get([
+                            'name', 'description', 'value', 'brand'
+                        ])
                     ));
                 }else{
                     return Response()->json(array(

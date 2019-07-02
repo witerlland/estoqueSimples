@@ -66,7 +66,7 @@ export default {
                         class   : 'alert-warning'
                     }
                 }else{
-                    fetch('http://localhost:8080/api/user/new', {
+                    fetch( apiUrl + 'user/new', {
                         method  : 'POST',
                         headers : {
                             'data'          : this.user,
