@@ -26,6 +26,7 @@ Vue.component('products-page', require('./pages/pProducts').default);
 // Components
 Vue.component('w-auth-form', require('./components/wAuthForm.vue').default);
 Vue.component('w-grid', require('./components/wGrid.vue').default);
+Vue.component('w-modal', require('./components/wModal.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
