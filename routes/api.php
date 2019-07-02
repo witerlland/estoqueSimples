@@ -16,3 +16,8 @@ use Illuminate\Http\Request;
 Route::group(['prefix' => '/user'], function(){
     Route::post('/new', 'Auth\RegisterController@new');
 });
+
+Route::group(['prefix' => '/products'], function(){
+    Route::get('/{id?}', 'Dash\ProductsController@get');
+    Route::post('/createOrUpdate', 'Dash\ProductsController@createOrUpdate');
+});
