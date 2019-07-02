@@ -2321,6 +2321,70 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2340,12 +2404,63 @@ __webpack_require__.r(__webpack_exports__);
         show: false,
         text: '',
         "class": ''
+      },
+      newProductModal: false,
+      newProduct: {
+        name: '',
+        description: '',
+        value: 0,
+        brand: ''
       }
     };
   },
   methods: {
-    showModal: function showModal(data) {
+    saveNew: function saveNew() {
       var _this = this;
+
+      var data = {
+        "name": this.newProduct.name,
+        "description": this.newProduct.description,
+        "value": this.newProduct.value,
+        "brand": this.newProduct.brand
+      };
+      fetch(apiUrl + 'products/createOrUpdate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'w-auth-token': wAuthToken
+        },
+        body: JSON.stringify(data)
+      }).then(function (response) {
+        return response.json();
+      }).then(function (responseJSON) {
+        if (responseJSON.status == true) {
+          _this.alerts.show = true;
+          _this.alerts.text = 'Produto cadastrado com sucesso.';
+          _this.alerts["class"] = 'alert-success';
+
+          _this.getProducts();
+        } else {
+          _this.alerts.show = true;
+          _this.alerts.text = 'Erro ao cadastrar produto.';
+          _this.alerts["class"] = 'alert-warning';
+        }
+      })["catch"](function (response) {
+        _this.alerts.show = true;
+        _this.alerts.text = 'Erro ao conectar ao servidor.';
+        _this.alerts["class"] = 'alert-danger';
+      });
+    },
+    closeModalNew: function closeModalNew() {
+      this.newProduct.name = '';
+      this.newProduct.description = '';
+      this.newProduct.value = 0;
+      this.newProduct.brand = '';
+      this.alerts.show = false;
+      this.newProductModal = false;
+    },
+    showModal: function showModal(data) {
+      var _this2 = this;
 
       fetch(apiUrl + 'products/' + data.id, {
         method: 'GET',
@@ -2357,9 +2472,9 @@ __webpack_require__.r(__webpack_exports__);
         return response.json();
       }).then(function (responseJSON) {
         if (responseJSON.status == true) {
-          _this.modalContent = responseJSON.response;
-          _this.modal = true;
-          _this.modalTitle = _this.modalContent.name;
+          _this2.modalContent = responseJSON.response;
+          _this2.modal = true;
+          _this2.modalTitle = _this2.modalContent.name;
         } else {
           console.log("status", "=>", responseJSON.response);
         }
@@ -2381,7 +2496,7 @@ __webpack_require__.r(__webpack_exports__);
       this.getProducts();
     },
     getProducts: function getProducts() {
-      var _this2 = this;
+      var _this3 = this;
 
       fetch(apiUrl + 'products/', {
         method: 'GET',
@@ -2393,7 +2508,7 @@ __webpack_require__.r(__webpack_exports__);
         return response.json();
       }).then(function (responseJSON) {
         if (responseJSON.status == true) {
-          _this2.contents = responseJSON.response;
+          _this3.contents = responseJSON.response;
         } else {
           console.log('Erro requisição', '=>', responseJSON.response);
         }
@@ -2413,7 +2528,7 @@ __webpack_require__.r(__webpack_exports__);
       this.saveBtn = true;
     },
     saveChanges: function saveChanges() {
-      var _this3 = this;
+      var _this4 = this;
 
       var data = {
         "id": this.modalContent.id,
@@ -2433,18 +2548,18 @@ __webpack_require__.r(__webpack_exports__);
         return response.json();
       }).then(function (responseJSON) {
         if (responseJSON.status == true) {
-          _this3.alerts.show = true;
-          _this3.alerts.text = 'Dados atualizados com sucesso.';
-          _this3.alerts["class"] = 'alert-success';
+          _this4.alerts.show = true;
+          _this4.alerts.text = 'Dados atualizados com sucesso.';
+          _this4.alerts["class"] = 'alert-success';
         } else {
-          _this3.alerts.show = true;
-          _this3.alerts.text = 'Erro ao atualizar dados.';
-          _this3.alerts["class"] = 'alert-warning';
+          _this4.alerts.show = true;
+          _this4.alerts.text = 'Erro ao atualizar dados.';
+          _this4.alerts["class"] = 'alert-warning';
         }
       })["catch"](function (response) {
-        _this3.alerts.show = true;
-        _this3.alerts.text = 'Erro ao conectar ao servidor.';
-        _this3.alerts["class"] = 'alert-danger';
+        _this4.alerts.show = true;
+        _this4.alerts.text = 'Erro ao conectar ao servidor.';
+        _this4.alerts["class"] = 'alert-danger';
       });
     }
   },
@@ -39106,19 +39221,214 @@ var render = function() {
     "div",
     { staticClass: "container-fluid" },
     [
-      _c("h2", [_vm._v("Produtos mesmo")]),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-2" }, [
+          _c("ul", { staticClass: "list-group" }, [
+            _c(
+              "a",
+              {
+                staticClass: "list-group-item list-group-item-action active",
+                attrs: { href: "#" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    _vm.newProductModal = true
+                  }
+                }
+              },
+              [_vm._v("\n                    Novo produto.\n                ")]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-10" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "container" },
+            [
+              _c("w-grid", {
+                attrs: {
+                  searchKey: "name",
+                  sortKey: "id",
+                  controllers: "true",
+                  searchControllers: "true",
+                  titles: _vm.titles,
+                  contents: _vm.contents
+                },
+                on: { showModal: _vm.showModal }
+              })
+            ],
+            1
+          )
+        ])
+      ]),
       _vm._v(" "),
-      _c("w-grid", {
-        attrs: {
-          searchKey: "name",
-          sortKey: "id",
-          controllers: "true",
-          searchControllers: "true",
-          titles: _vm.titles,
-          contents: _vm.contents
+      _c(
+        "w-modal",
+        {
+          attrs: {
+            title: "Novo produto",
+            showModal: _vm.newProductModal,
+            showSaveBtn: true
+          },
+          on: { saveAction: _vm.saveNew, closeModal: _vm.closeModalNew }
         },
-        on: { showModal: _vm.showModal }
-      }),
+        [
+          _c("div", { staticClass: "container" }, [
+            _c("div", [
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.alerts.show,
+                      expression: "alerts.show"
+                    }
+                  ],
+                  staticClass: "alert alert-dismissible fade show",
+                  class: _vm.alerts.class,
+                  attrs: { role: "alert" }
+                },
+                [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.alerts.text) +
+                      "\n                "
+                  )
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-12" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "userName" } }, [_vm._v("Nome")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.newProduct.name,
+                        expression: "newProduct.name"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.newProduct.name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.newProduct, "name", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-12" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "userName" } }, [
+                    _vm._v("Descrição")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.newProduct.description,
+                        expression: "newProduct.description"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.newProduct.description },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.newProduct,
+                          "description",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-12" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "userName" } }, [
+                    _vm._v("Valor")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.newProduct.value,
+                        expression: "newProduct.value"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "number" },
+                    domProps: { value: _vm.newProduct.value },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.newProduct, "value", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-12" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "userName" } }, [
+                    _vm._v("Marca")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.newProduct.brand,
+                        expression: "newProduct.brand"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.newProduct.brand },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.newProduct, "brand", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              ])
+            ])
+          ])
+        ]
+      ),
       _vm._v(" "),
       _c(
         "w-modal",
@@ -39241,7 +39551,7 @@ var render = function() {
               _c("div", { staticClass: "col-12" }, [
                 _c("div", { staticClass: "form-group" }, [
                   _c("label", { attrs: { for: "userName" } }, [
-                    _vm._v("Descrição")
+                    _vm._v("Valor")
                   ]),
                   _vm._v(" "),
                   _c("input", {
@@ -39373,7 +39683,24 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "container" }, [
+      _c("ol", { staticClass: "breadcrumb" }, [
+        _c("li", { staticClass: "breadcrumb-item" }, [
+          _c("a", { attrs: { href: "/" } }, [_vm._v("Dashboard")])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "breadcrumb-item active" }, [
+          _vm._v("\n                        Produtos\n                    ")
+        ])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 

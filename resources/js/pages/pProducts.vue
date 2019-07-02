@@ -1,16 +1,80 @@
 <template>
     <div class="container-fluid" >
-        <h2>Produtos mesmo</h2>
+        <div class="row" >
+            <div class="col-md-2" >
+                <ul class="list-group">
+                    <a href="#" @click.prevent="newProductModal = true" class="list-group-item list-group-item-action active">
+                        Novo produto.
+                    </a>
+                </ul>
+            </div>
+            <div class="col-md-10">
+                <div class="container">
+                    <!-- Breadcrumbs-->
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            Produtos
+                        </li>
+                    </ol>
+                </div>
+                <div class="container" >
+                    <w-grid 
+                        searchKey="name"
+                        sortKey="id"
+                        controllers='true' 
+                        searchControllers='true'
+                        :titles='titles'
+                        :contents='contents'
+                        v-on:showModal="showModal"
+                    ></w-grid>
+                </div>
+            </div>
+        </div>
 
-        <w-grid 
-            searchKey="name"
-            sortKey="id"
-            controllers='true' 
-            searchControllers='true'
-            :titles='titles'
-            :contents='contents'
-            v-on:showModal="showModal"
-        ></w-grid>
+        <w-modal
+            title="Novo produto"
+            :showModal='newProductModal'
+            :showSaveBtn='true'
+            v-on:saveAction='saveNew'
+            v-on:closeModal="closeModalNew"
+        >
+            <div class="container" >
+                <div>
+                    <div v-show="alerts.show" :class="alerts.class" class="alert alert-dismissible fade show" role="alert">
+                        {{alerts.text}}
+                    </div>
+                </div>
+                <div class="row" >
+                    <div class="col-12" >
+                        <div class="form-group">
+                            <label for="userName">Nome</label>
+                            <input v-model="newProduct.name" type="text" class="form-control" >
+                        </div>
+                    </div>
+                    <div class="col-12" >
+                        <div class="form-group">
+                            <label for="userName">Descrição</label>
+                            <input v-model="newProduct.description" type="text" class="form-control" >
+                        </div>
+                    </div>
+                    <div class="col-12" >
+                        <div class="form-group">
+                            <label for="userName">Valor</label>
+                            <input v-model="newProduct.value" type="number" class="form-control" >
+                        </div>
+                    </div>
+                    <div class="col-12" >
+                        <div class="form-group">
+                            <label for="userName">Marca</label>
+                            <input v-model="newProduct.brand" type="text" class="form-control" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </w-modal>
 
         <w-modal
             :title="modalTitle"
@@ -43,7 +107,7 @@
                     </div>
                     <div class="col-12" >
                         <div class="form-group">
-                            <label for="userName">Descrição</label>
+                            <label for="userName">Valor</label>
                             <input v-model="modalContent.value" disabled type="number" class="form-control enable-with-change" >
                         </div>
                     </div>
@@ -90,10 +154,64 @@
                     show    : false,
                     text    : '',
                     class   : ''
+                },
+                newProductModal     : false,
+                newProduct          : {
+                    name        : '',
+                    description : '',
+                    value       : 0,
+                    brand       : ''
                 }
             }
         },
         methods: {
+            saveNew     : function(){
+                var data = {
+                    "name"          : this.newProduct.name,
+                    "description"   : this.newProduct.description,
+                    "value"         : this.newProduct.value,
+                    "brand"         : this.newProduct.brand
+                }
+
+                fetch( apiUrl + 'products/createOrUpdate', {
+                    method  : 'POST',
+                    headers : {
+                        'Content-Type'  : 'application/json',
+                        'w-auth-token'  : wAuthToken
+                    },
+                    body    : JSON.stringify(data)
+                })
+                    .then(response      => (response.json()))
+                    .then(responseJSON  => {
+                        if(responseJSON.status == true){
+                            this.alerts.show    = true;
+                            this.alerts.text    = 'Produto cadastrado com sucesso.';
+                            this.alerts.class   = 'alert-success';
+
+                            this.getProducts();
+                        }else{
+                            this.alerts.show    = true;
+                            this.alerts.text    = 'Erro ao cadastrar produto.';
+                            this.alerts.class   = 'alert-warning';
+                        }
+                    })
+                    .catch(response     => {
+                        this.alerts.show    = true;
+                        this.alerts.text    = 'Erro ao conectar ao servidor.';
+                        this.alerts.class   = 'alert-danger';
+                    });
+            },
+
+            closeModalNew   : function(){
+                this.newProduct.name        = '';
+                this.newProduct.description = '';
+                this.newProduct.value       = 0;
+                this.newProduct.brand       = '';
+
+                this.alerts.show    = false;
+                this.newProductModal = false;
+            },
+
             showModal   : function(data){
                 fetch(apiUrl + 'products/' + data.id, {
                     method: 'GET',
