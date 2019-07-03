@@ -13,8 +13,7 @@ use App\User;
 use App\Models\Product;
 use App\Models\Stock;
 
-class ProductsController extends Controller
-{
+class ProductsController extends Controller{
     public function index(){
         return view('pages.products');
     }
@@ -52,11 +51,6 @@ class ProductsController extends Controller
                                     product.user_id = $user->id
                             ")
                         )
-                        // Product::where([
-                        //     ['user_id', '=', $user->id]
-                        // ])->get([
-                        //     'id', 'name', 'description', 'value', 'brand'
-                        // ])
                     ));
                 }else{
                     return Response()->json(array(
@@ -85,15 +79,6 @@ class ProductsController extends Controller
                                     product.id = $id
                             ")
                         )
-                        // array(
-                        //     'product'   => Product::where([
-                        //         ['id', '=', $id],
-                        //         ['user_id', '=', $user->id]
-                        //     ])->firstOrFail(),
-                        //     'stock'     => Stock::where([
-                        //         ['user_id', '=', $user->id],
-                        //         ['product_id', '=', $id]
-                        //     ])->firstOrFail() )
                     ));
                 }
 

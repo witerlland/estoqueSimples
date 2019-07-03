@@ -22,6 +22,7 @@ window.Vue = require('vue');
 // Pages
 Vue.component('new-user-page', require('./pages/pNewUser').default);
 Vue.component('products-page', require('./pages/pProducts').default);
+Vue.component('clients-page', require('./pages/pClients').default);
 
 // Components
 Vue.component('w-auth-form', require('./components/wAuthForm.vue').default);

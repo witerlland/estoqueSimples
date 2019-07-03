@@ -21,3 +21,8 @@ Route::group(['prefix' => '/products'], function(){
     Route::get('/{id?}', 'Dash\ProductsController@get');
     Route::post('/createOrUpdate', 'Dash\ProductsController@createOrUpdate');
 });
+
+Route::group(['prefix' => '/clients'], function(){
+    Route::get('/{id?}', 'Dash\ClientsController@get');
+    Route::post('/createOrUpdate', 'Dash\ClientsController@createOrUpdate');
+});
