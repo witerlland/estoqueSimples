@@ -2385,6 +2385,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2394,7 +2415,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      titles: ['id', 'Nome', 'Descrição', 'Valor', 'Marca'],
+      titles: ['id', 'Nome', 'Descrição', 'Valor', 'Marca', 'Estoque'],
       contents: [],
       modal: false,
       modalTitle: '',
@@ -2410,7 +2431,8 @@ __webpack_require__.r(__webpack_exports__);
         name: '',
         description: '',
         value: 0,
-        brand: ''
+        brand: '',
+        stock: 0
       }
     };
   },
@@ -2422,7 +2444,8 @@ __webpack_require__.r(__webpack_exports__);
         "name": this.newProduct.name,
         "description": this.newProduct.description,
         "value": this.newProduct.value,
-        "brand": this.newProduct.brand
+        "brand": this.newProduct.brand,
+        "stock": this.newProduct.stock
       };
       fetch(apiUrl + 'products/createOrUpdate', {
         method: 'POST',
@@ -2472,7 +2495,7 @@ __webpack_require__.r(__webpack_exports__);
         return response.json();
       }).then(function (responseJSON) {
         if (responseJSON.status == true) {
-          _this2.modalContent = responseJSON.response;
+          _this2.modalContent = responseJSON.response[0];
           _this2.modal = true;
           _this2.modalTitle = _this2.modalContent.name;
         } else {
@@ -7065,7 +7088,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.w-modal[data-v-eacf38fe]{\n    background-color: rgba(0, 0, 0, 0.2);\n    padding-top: 3rem;\n    position: fixed;\n    z-index: 999;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n}\n.w-modal-content[data-v-eacf38fe]{\n    width: 60vw;\n    height: auto;\n    background-color: #FFF;\n    display: -webkit-box;\n    display: flex;\n    margin: auto;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n            flex-direction: column;\n    border-radius: 2px;\n    padding: 1rem 1.5rem;\n    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);\n}\n.w-modal-body[data-v-eacf38fe]{}\n.w-modal-footer[data-v-eacf38fe]{}\n", ""]);
+exports.push([module.i, "\n.w-modal[data-v-eacf38fe]{\n    background-color: rgba(0, 0, 0, 0.2);\n    padding-top: 3rem;\n    padding-bottom: 3rem;\n    position: fixed;\n    z-index: 999;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n}\n.w-modal-content[data-v-eacf38fe]{\n    width: 60vw;\n    height: 100%;\n    background-color: #FFF;\n    display: -webkit-box;\n    display: flex;\n    margin: auto;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n            flex-direction: column;\n    border-radius: 2px;\n    padding: 1rem 1.5rem;\n    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);\n    overflow-x: scroll;\n}\n.w-modal-body[data-v-eacf38fe]{}\n.w-modal-footer[data-v-eacf38fe]{}\n", ""]);
 
 // exports
 
@@ -39223,22 +39246,36 @@ var render = function() {
     [
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-2" }, [
-          _c("ul", { staticClass: "list-group" }, [
-            _c(
-              "a",
-              {
-                staticClass: "list-group-item list-group-item-action active",
-                attrs: { href: "#" },
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    _vm.newProductModal = true
-                  }
-                }
-              },
-              [_vm._v("\n                    Novo produto.\n                ")]
-            )
-          ])
+          _c(
+            "div",
+            {
+              staticClass: "container",
+              staticStyle: { "padding-bottom": "1.5rem" }
+            },
+            [
+              _c("ul", { staticClass: "list-group" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass:
+                      "list-group-item list-group-item-action active",
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        _vm.newProductModal = true
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                        Novo produto.\n                    "
+                    )
+                  ]
+                )
+              ])
+            ]
+          )
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "col-md-10" }, [
@@ -39399,6 +39436,36 @@ var render = function() {
               _c("div", { staticClass: "col-12" }, [
                 _c("div", { staticClass: "form-group" }, [
                   _c("label", { attrs: { for: "userName" } }, [
+                    _vm._v("Estoque")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.newProduct.stock,
+                        expression: "newProduct.stock"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "number" },
+                    domProps: { value: _vm.newProduct.stock },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.newProduct, "stock", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-12" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "userName" } }, [
                     _vm._v("Marca")
                   ]),
                   _vm._v(" "),
@@ -39486,7 +39553,9 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-12" }, [
+              _c("br"),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
                 _c("div", { staticClass: "form-group" }, [
                   _c("label", { attrs: { for: "userName" } }, [_vm._v("Nome")]),
                   _vm._v(" "),
@@ -39508,6 +39577,36 @@ var render = function() {
                           return
                         }
                         _vm.$set(_vm.modalContent, "name", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "userName" } }, [
+                    _vm._v("Valor")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.modalContent.value,
+                        expression: "modalContent.value"
+                      }
+                    ],
+                    staticClass: "form-control enable-with-change",
+                    attrs: { disabled: "", type: "number" },
+                    domProps: { value: _vm.modalContent.value },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.modalContent, "value", $event.target.value)
                       }
                     }
                   })
@@ -39551,36 +39650,6 @@ var render = function() {
               _c("div", { staticClass: "col-12" }, [
                 _c("div", { staticClass: "form-group" }, [
                   _c("label", { attrs: { for: "userName" } }, [
-                    _vm._v("Valor")
-                  ]),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.modalContent.value,
-                        expression: "modalContent.value"
-                      }
-                    ],
-                    staticClass: "form-control enable-with-change",
-                    attrs: { disabled: "", type: "number" },
-                    domProps: { value: _vm.modalContent.value },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.modalContent, "value", $event.target.value)
-                      }
-                    }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-12" }, [
-                _c("div", { staticClass: "form-group" }, [
-                  _c("label", { attrs: { for: "userName" } }, [
                     _vm._v("Marca")
                   ]),
                   _vm._v(" "),
@@ -39608,7 +39677,71 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-12" }, [
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "userName" } }, [
+                    _vm._v("Estoque")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.modalContent.stock,
+                        expression: "modalContent.stock"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { disabled: "", type: "text" },
+                    domProps: { value: _vm.modalContent.stock },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.modalContent, "stock", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "userName" } }, [
+                    _vm._v("Ultima mudança no estoque")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.modalContent.stock_created_at,
+                        expression: "modalContent.stock_created_at"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { disabled: "", type: "text" },
+                    domProps: { value: _vm.modalContent.stock_created_at },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.modalContent,
+                          "stock_created_at",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
                 _c("div", { staticClass: "form-group" }, [
                   _c("label", { attrs: { for: "userName" } }, [
                     _vm._v("Cadastrado em")
@@ -39642,7 +39775,7 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-12" }, [
+              _c("div", { staticClass: "col-md-6" }, [
                 _c("div", { staticClass: "form-group" }, [
                   _c("label", { attrs: { for: "userName" } }, [
                     _vm._v("Ultima atualização")

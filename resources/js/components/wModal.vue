@@ -51,6 +51,7 @@ export default {
     .w-modal{
         background-color: rgba(0, 0, 0, 0.2);
         padding-top: 3rem;
+        padding-bottom: 3rem;
         position: fixed;
         z-index: 999;
         top: 0;
@@ -61,7 +62,7 @@ export default {
 
     .w-modal-content{
         width: 60vw;
-        height: auto;
+        height: 100%;
         background-color: #FFF;
         display: flex;
         margin: auto;
@@ -69,6 +70,7 @@ export default {
         border-radius: 2px;
         padding: 1rem 1.5rem;
         box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
+        overflow-x: scroll;
     }
 
     .w-modal-body{}

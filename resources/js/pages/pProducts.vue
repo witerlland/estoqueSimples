@@ -2,11 +2,13 @@
     <div class="container-fluid" >
         <div class="row" >
             <div class="col-md-2" >
-                <ul class="list-group">
-                    <a href="#" @click.prevent="newProductModal = true" class="list-group-item list-group-item-action active">
-                        Novo produto.
-                    </a>
-                </ul>
+                <div class="container" style="padding-bottom: 1.5rem;" >
+                    <ul class="list-group">
+                        <a href="#" @click.prevent="newProductModal = true" class="list-group-item list-group-item-action active">
+                            Novo produto.
+                        </a>
+                    </ul>
+                </div>
             </div>
             <div class="col-md-10">
                 <div class="container">
@@ -68,6 +70,12 @@
                     </div>
                     <div class="col-12" >
                         <div class="form-group">
+                            <label for="userName">Estoque</label>
+                            <input v-model="newProduct.stock" type="number" class="form-control" >
+                        </div>
+                    </div>
+                    <div class="col-12" >
+                        <div class="form-group">
                             <label for="userName">Marca</label>
                             <input v-model="newProduct.brand" type="text" class="form-control" >
                         </div>
@@ -93,10 +101,17 @@
                     <div class="col-12" >
                         <a href="#" @click.prevent="enableChanges()" class="btn btn-primary btn-block" >Alterar</a>
                     </div>
-                    <div class="col-12" >
+                    <br>
+                    <div class="col-md-6" >
                         <div class="form-group">
                             <label for="userName">Nome</label>
                             <input v-model="modalContent.name" disabled type="text" class="form-control enable-with-change" >
+                        </div>
+                    </div>
+                    <div class="col-md-6" >
+                        <div class="form-group">
+                            <label for="userName">Valor</label>
+                            <input v-model="modalContent.value" disabled type="number" class="form-control enable-with-change" >
                         </div>
                     </div>
                     <div class="col-12" >
@@ -107,23 +122,29 @@
                     </div>
                     <div class="col-12" >
                         <div class="form-group">
-                            <label for="userName">Valor</label>
-                            <input v-model="modalContent.value" disabled type="number" class="form-control enable-with-change" >
-                        </div>
-                    </div>
-                    <div class="col-12" >
-                        <div class="form-group">
                             <label for="userName">Marca</label>
                             <input v-model="modalContent.brand" disabled type="text" class="form-control enable-with-change" >
                         </div>
                     </div>
-                    <div class="col-12" >
+                    <div class="col-md-6" >
+                        <div class="form-group">
+                            <label for="userName">Estoque</label>
+                            <input v-model="modalContent.stock" disabled type="text" class="form-control" >
+                        </div>
+                    </div>
+                    <div class="col-md-6" >
+                        <div class="form-group">
+                            <label for="userName">Ultima mudança no estoque</label>
+                            <input v-model="modalContent.stock_created_at" disabled type="text" class="form-control" >
+                        </div>
+                    </div>
+                    <div class="col-md-6" >
                         <div class="form-group">
                             <label for="userName">Cadastrado em</label>
                             <input v-model="modalContent.created_at" disabled type="text" class="form-control" >
                         </div>
                     </div>
-                    <div class="col-12" >
+                    <div class="col-md-6" >
                         <div class="form-group">
                             <label for="userName">Ultima atualização</label>
                             <input v-model="modalContent.updated_at" disabled type="text" class="form-control" >
@@ -144,7 +165,7 @@
         },
         data(){
             return {
-                titles      : ['id', 'Nome', 'Descrição', 'Valor', 'Marca'],
+                titles      : ['id', 'Nome', 'Descrição', 'Valor', 'Marca', 'Estoque'],
                 contents    : [],
                 modal       : false,
                 modalTitle  : '',
@@ -160,7 +181,8 @@
                     name        : '',
                     description : '',
                     value       : 0,
-                    brand       : ''
+                    brand       : '',
+                    stock       : 0
                 }
             }
         },
@@ -170,7 +192,8 @@
                     "name"          : this.newProduct.name,
                     "description"   : this.newProduct.description,
                     "value"         : this.newProduct.value,
-                    "brand"         : this.newProduct.brand
+                    "brand"         : this.newProduct.brand,
+                    "stock"         : this.newProduct.stock,
                 }
 
                 fetch( apiUrl + 'products/createOrUpdate', {
@@ -223,7 +246,7 @@
                     .then(response => (response.json()))
                     .then(responseJSON => {
                         if(responseJSON.status == true){
-                            this.modalContent   = responseJSON.response;
+                            this.modalContent   = responseJSON.response[0];
                             this.modal          = true;
                             this.modalTitle     = this.modalContent.name;
                         }else{
