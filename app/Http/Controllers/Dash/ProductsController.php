@@ -114,9 +114,9 @@ class ProductsController extends Controller{
                     ['id' => $request->id, 'user_id' => $user->id],
                     [
                         'name'          => $request->name,
-                        'description'   => $request->description,
+                        'description'   => ($request->description) ? 'Sem descrição' : $request->description,
                         'value'         => $request->value,
-                        'brand'         => $request->brand
+                        'brand'         => ($request->brand == '') ? 'Sem marca' : $request->brand
                     ]
                 );
 

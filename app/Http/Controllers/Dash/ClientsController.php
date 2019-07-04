@@ -80,8 +80,8 @@ class ClientsController extends Controller{
                     ['id' => $request->id, 'user_id' => $user->id],
                     [
                         'name'          => $request->name,
-                        'email'         => $request->email,
-                        'phone'         => $request->phone
+                        'email'         => ($request->email == '') ? 'user@mail.com' : $request->email,
+                        'phone'         => ($request->phone == '') ? '(77) 00000-0000' : $request->phone
                     ]
                 );
 
