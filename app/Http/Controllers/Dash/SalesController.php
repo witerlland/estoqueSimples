@@ -126,12 +126,12 @@ class SalesController extends Controller{
                                 DB::raw("
                                     select
                                         basket.id,
-                                        basket.amount,
-                                        basket.total_value,
                                         product.name,
                                         product.description,
+                                        product.brand,
                                         product.value,
-                                        product.brand
+                                        basket.amount,
+                                        basket.total_value
                                     from
                                         sale
                                     join

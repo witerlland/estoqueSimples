@@ -2913,6 +2913,342 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/pSales.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/pSales.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_wGrid_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/wGrid.vue */ "./resources/js/components/wGrid.vue");
+/* harmony import */ var _components_wModal_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/wModal.vue */ "./resources/js/components/wModal.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'pSales',
+  components: {
+    wGrid: _components_wGrid_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      titles: ['Id', 'Valor', 'Cliente', 'Email', 'Telefone', 'Data'],
+      contents: [],
+      modal: false,
+      modalTitle: '',
+      modalContent: {
+        sale: [{}],
+        basket: []
+      },
+      saveBtn: false,
+      alerts: {
+        show: false,
+        text: '',
+        "class": ''
+      },
+      newClientModal: false,
+      newClient: {
+        name: '',
+        phone: '',
+        email: ''
+      }
+    };
+  },
+  methods: {
+    saveNew: function saveNew() {
+      var _this = this;
+
+      var data = {
+        "name": this.newClient.name,
+        "email": this.newClient.email,
+        "phone": this.newClient.phone
+      };
+      fetch(apiUrl + 'clients/createOrUpdate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'w-auth-token': wAuthToken
+        },
+        body: JSON.stringify(data)
+      }).then(function (response) {
+        return response.json();
+      }).then(function (responseJSON) {
+        if (responseJSON.status == true) {
+          _this.alerts.show = true;
+          _this.alerts.text = 'Cliente cadastrado com sucesso.';
+          _this.alerts["class"] = 'alert-success';
+
+          _this.getSales();
+        } else {
+          _this.alerts.show = true;
+          _this.alerts.text = 'Erro ao cadastrar cliente.';
+          _this.alerts["class"] = 'alert-warning';
+        }
+      })["catch"](function (response) {
+        _this.alerts.show = true;
+        _this.alerts.text = 'Erro ao conectar ao servidor.';
+        _this.alerts["class"] = 'alert-danger';
+      });
+    },
+    closeModalNew: function closeModalNew() {
+      this.newClient.name = '';
+      this.newClient.email = '';
+      this.newClient.phone = '';
+      this.alerts.show = false;
+      this.newClientModal = false;
+    },
+    showModal: function showModal(data) {
+      var _this2 = this;
+
+      fetch(apiUrl + 'sales/' + data.id, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'w-auth-token': wAuthToken
+        }
+      }).then(function (response) {
+        return response.json();
+      }).then(function (responseJSON) {
+        if (responseJSON.status == true) {
+          _this2.modalContent = responseJSON.response;
+          _this2.modal = true;
+          _this2.modalTitle = 'Venda para: ' + _this2.modalContent.sale[0].name;
+        } else {
+          console.log("status", "=>", responseJSON.response);
+        }
+      })["catch"](function (error) {
+        return console.log('Error', '=>', error);
+      });
+    },
+    closeModal: function closeModal() {
+      var itens = document.getElementsByClassName('enable-with-change');
+
+      for (var index = 0; index < itens.length; index++) {
+        // const element = array[index];
+        // let item = require.item(index).value;
+        itens[index].disabled = true;
+      }
+
+      this.modal = false;
+      this.alerts.show = false;
+      this.modalTitle = '';
+      this.getSales();
+    },
+    getSales: function getSales() {
+      var _this3 = this;
+
+      fetch(apiUrl + 'sales/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'w-auth-token': wAuthToken
+        }
+      }).then(function (response) {
+        return response.json();
+      }).then(function (responseJSON) {
+        if (responseJSON.status == true) {
+          _this3.contents = responseJSON.response;
+        } else {
+          console.log('Erro requisição', '=>', responseJSON.response);
+        }
+      })["catch"](function (response) {
+        console.log('Erro requisição', '=>', response.message);
+      });
+    },
+    enableChanges: function enableChanges() {
+      var itens = document.getElementsByClassName('enable-with-change');
+
+      for (var index = 0; index < itens.length; index++) {
+        // const element = array[index];
+        // let item = require.item(index).value;
+        itens[index].disabled = false;
+      }
+
+      this.saveBtn = true;
+    },
+    saveChanges: function saveChanges() {
+      var _this4 = this;
+
+      var data = {
+        "id": this.modalContent.id,
+        "name": this.modalContent.name,
+        "email": this.modalContent.email,
+        "phone": this.modalContent.phone
+      };
+      fetch(apiUrl + 'clients/createOrUpdate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'w-auth-token': wAuthToken
+        },
+        body: JSON.stringify(data)
+      }).then(function (response) {
+        return response.json();
+      }).then(function (responseJSON) {
+        if (responseJSON.status == true) {
+          _this4.alerts.show = true;
+          _this4.alerts.text = 'Dados atualizados com sucesso.';
+          _this4.alerts["class"] = 'alert-success';
+        } else {
+          _this4.alerts.show = true;
+          _this4.alerts.text = 'Erro ao atualizar dados.';
+          _this4.alerts["class"] = 'alert-warning';
+        }
+      })["catch"](function (response) {
+        _this4.alerts.show = true;
+        _this4.alerts.text = 'Erro ao conectar ao servidor.';
+        _this4.alerts["class"] = 'alert-danger';
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.getSales();
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/bootstrap/dist/js/bootstrap.js":
 /*!*****************************************************!*\
   !*** ./node_modules/bootstrap/dist/js/bootstrap.js ***!
@@ -39818,7 +40154,7 @@ var staticRenderFns = [
         ]),
         _vm._v(" "),
         _c("li", { staticClass: "breadcrumb-item active" }, [
-          _vm._v("\n                        Cleintes\n                    ")
+          _vm._v("\n                        Clientes\n                    ")
         ])
       ])
     ])
@@ -40602,6 +40938,488 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("li", { staticClass: "breadcrumb-item active" }, [
           _vm._v("\n                        Produtos\n                    ")
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/pSales.vue?vue&type=template&id=7883f725&":
+/*!****************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/pSales.vue?vue&type=template&id=7883f725& ***!
+  \****************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "container-fluid" },
+    [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-2" }, [
+          _c(
+            "div",
+            {
+              staticClass: "container",
+              staticStyle: { "padding-bottom": "1.5rem" }
+            },
+            [
+              _c("ul", { staticClass: "list-group" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass:
+                      "list-group-item list-group-item-action active",
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        _vm.newClientModal = true
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                        Nova venda.\n                    "
+                    )
+                  ]
+                )
+              ])
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-10" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "container" },
+            [
+              _c("w-grid", {
+                attrs: {
+                  searchKey: "name",
+                  sortKey: "id",
+                  controllers: "true",
+                  searchControllers: "true",
+                  titles: _vm.titles,
+                  contents: _vm.contents
+                },
+                on: { showModal: _vm.showModal }
+              })
+            ],
+            1
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "w-modal",
+        {
+          attrs: {
+            title: "Novo produto",
+            showModal: _vm.newClientModal,
+            showSaveBtn: true
+          },
+          on: { saveAction: _vm.saveNew, closeModal: _vm.closeModalNew }
+        },
+        [
+          _c("div", { staticClass: "container" }, [
+            _c("div", [
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.alerts.show,
+                      expression: "alerts.show"
+                    }
+                  ],
+                  staticClass: "alert alert-dismissible fade show",
+                  class: _vm.alerts.class,
+                  attrs: { role: "alert" }
+                },
+                [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.alerts.text) +
+                      "\n                "
+                  )
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-12" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "userName" } }, [_vm._v("Nome")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.newClient.name,
+                        expression: "newClient.name"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.newClient.name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.newClient, "name", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-12" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "userName" } }, [
+                    _vm._v("Email")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.newClient.email,
+                        expression: "newClient.email"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.newClient.email },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.newClient, "email", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-12" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "userName" } }, [
+                    _vm._v("Telefone")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.newClient.phone,
+                        expression: "newClient.phone"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.newClient.phone },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.newClient, "phone", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              ])
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "w-modal",
+        {
+          attrs: {
+            title: _vm.modalTitle,
+            showModal: _vm.modal,
+            showSaveBtn: _vm.saveBtn
+          },
+          on: { saveAction: _vm.saveChanges, closeModal: _vm.closeModal }
+        },
+        [
+          _c("div", { staticClass: "container" }, [
+            _c("div", [
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.alerts.show,
+                      expression: "alerts.show"
+                    }
+                  ],
+                  staticClass: "alert alert-dismissible fade show",
+                  class: _vm.alerts.class,
+                  attrs: { role: "alert" }
+                },
+                [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.alerts.text) +
+                      "\n                "
+                  )
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("header", { staticClass: "col-md-12 text-center" }, [
+                _c("h3", [_vm._v("Cliente")])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "userName" } }, [
+                    _vm._v("Cliente")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.modalContent.sale[0].name,
+                        expression: "modalContent.sale[0].name"
+                      }
+                    ],
+                    staticClass: "form-control enable-with-change",
+                    attrs: { disabled: "", type: "text" },
+                    domProps: { value: _vm.modalContent.sale[0].name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.modalContent.sale[0],
+                          "name",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "userName" } }, [
+                    _vm._v("Valor da compra")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.modalContent.sale[0].total_value,
+                        expression: "modalContent.sale[0].total_value"
+                      }
+                    ],
+                    staticClass: "form-control enable-with-change",
+                    attrs: { disabled: "", type: "text" },
+                    domProps: { value: _vm.modalContent.sale[0].total_value },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.modalContent.sale[0],
+                          "total_value",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "userName" } }, [
+                    _vm._v("Email")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.modalContent.sale[0].email,
+                        expression: "modalContent.sale[0].email"
+                      }
+                    ],
+                    staticClass: "form-control enable-with-change",
+                    attrs: { disabled: "", type: "text" },
+                    domProps: { value: _vm.modalContent.sale[0].email },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.modalContent.sale[0],
+                          "email",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "userName" } }, [
+                    _vm._v("Telefone")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.modalContent.sale[0].phone,
+                        expression: "modalContent.sale[0].phone"
+                      }
+                    ],
+                    staticClass: "form-control enable-with-change",
+                    attrs: { disabled: "", type: "text" },
+                    domProps: { value: _vm.modalContent.sale[0].phone },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.modalContent.sale[0],
+                          "phone",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-12" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "userName" } }, [
+                    _vm._v("Cadastrado em")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.modalContent.sale[0].created_at,
+                        expression: "modalContent.sale[0].created_at"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { disabled: "", type: "text" },
+                    domProps: { value: _vm.modalContent.sale[0].created_at },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.modalContent.sale[0],
+                          "created_at",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "container" },
+              [
+                _c("h3", { staticClass: "text-center" }, [_vm._v("Produtos")]),
+                _vm._v(" "),
+                _c("w-grid", {
+                  attrs: {
+                    searchKey: "name",
+                    sortKey: "id",
+                    controllers: "false",
+                    searchControllers: "false",
+                    titles: [
+                      "Id",
+                      "Produto",
+                      "Descrição",
+                      "Marca",
+                      "Valor",
+                      "Quantidade",
+                      "Total Valor"
+                    ],
+                    contents: _vm.modalContent.basket
+                  }
+                })
+              ],
+              1
+            )
+          ])
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "container" }, [
+      _c("ol", { staticClass: "breadcrumb" }, [
+        _c("li", { staticClass: "breadcrumb-item" }, [
+          _c("a", { attrs: { href: "/" } }, [_vm._v("Dashboard")])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "breadcrumb-item active" }, [
+          _vm._v("\n                        Vendas\n                    ")
         ])
       ])
     ])
@@ -52777,7 +53595,8 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 Vue.component('new-user-page', __webpack_require__(/*! ./pages/pNewUser */ "./resources/js/pages/pNewUser.vue")["default"]);
 Vue.component('products-page', __webpack_require__(/*! ./pages/pProducts */ "./resources/js/pages/pProducts.vue")["default"]);
-Vue.component('clients-page', __webpack_require__(/*! ./pages/pClients */ "./resources/js/pages/pClients.vue")["default"]); // Components
+Vue.component('clients-page', __webpack_require__(/*! ./pages/pClients */ "./resources/js/pages/pClients.vue")["default"]);
+Vue.component('sales-page', __webpack_require__(/*! ./pages/pSales */ "./resources/js/pages/pSales.vue")["default"]); // Components
 
 Vue.component('w-auth-form', __webpack_require__(/*! ./components/wAuthForm.vue */ "./resources/js/components/wAuthForm.vue")["default"]);
 Vue.component('w-grid', __webpack_require__(/*! ./components/wGrid.vue */ "./resources/js/components/wGrid.vue")["default"]);
@@ -53315,6 +54134,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_pProducts_vue_vue_type_template_id_5977d4db___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_pProducts_vue_vue_type_template_id_5977d4db___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/pages/pSales.vue":
+/*!***************************************!*\
+  !*** ./resources/js/pages/pSales.vue ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _pSales_vue_vue_type_template_id_7883f725___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pSales.vue?vue&type=template&id=7883f725& */ "./resources/js/pages/pSales.vue?vue&type=template&id=7883f725&");
+/* harmony import */ var _pSales_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pSales.vue?vue&type=script&lang=js& */ "./resources/js/pages/pSales.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _pSales_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _pSales_vue_vue_type_template_id_7883f725___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _pSales_vue_vue_type_template_id_7883f725___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/pages/pSales.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/pages/pSales.vue?vue&type=script&lang=js&":
+/*!****************************************************************!*\
+  !*** ./resources/js/pages/pSales.vue?vue&type=script&lang=js& ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_pSales_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./pSales.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/pSales.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_pSales_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/pages/pSales.vue?vue&type=template&id=7883f725&":
+/*!**********************************************************************!*\
+  !*** ./resources/js/pages/pSales.vue?vue&type=template&id=7883f725& ***!
+  \**********************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_pSales_vue_vue_type_template_id_7883f725___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./pSales.vue?vue&type=template&id=7883f725& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/pSales.vue?vue&type=template&id=7883f725&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_pSales_vue_vue_type_template_id_7883f725___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_pSales_vue_vue_type_template_id_7883f725___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

@@ -5,7 +5,7 @@
                 <div class="container" style="padding-bottom: 1.5rem;" >
                     <ul class="list-group">
                         <a href="#" @click.prevent="newClientModal = true" class="list-group-item list-group-item-action active">
-                            Novo cliente.
+                            Nova venda.
                         </a>
                     </ul>
                 </div>
@@ -18,7 +18,7 @@
                             <a href="/">Dashboard</a>
                         </li>
                         <li class="breadcrumb-item active">
-                            Clientes
+                            Vendas
                         </li>
                     </ol>
                 </div>
@@ -86,40 +86,53 @@
                     </div>
                 </div>
                 <div class="row" >
-                    <div class="col-12" >
-                        <a href="#" @click.prevent="enableChanges()" class="btn btn-primary btn-block" >Alterar</a>
-                    </div>
-                    <br>
+                    <header class="col-md-12 text-center">
+                        <h3>Cliente</h3>
+                    </header>
                     <div class="col-md-6" >
                         <div class="form-group">
-                            <label for="userName">Nome</label>
-                            <input v-model="modalContent.name" disabled type="text" class="form-control enable-with-change" >
+                            <label for="userName">Cliente</label>
+                            <input v-model="modalContent.sale[0].name" disabled type="text" class="form-control enable-with-change" >
+                        </div>
+                    </div>
+                    <div class="col-md-6" >
+                        <div class="form-group">
+                            <label for="userName">Valor da compra</label>
+                            <input v-model="modalContent.sale[0].total_value" disabled type="text" class="form-control enable-with-change" >
+                        </div>
+                    </div>
+                    <div class="col-md-6" >
+                        <div class="form-group">
+                            <label for="userName">Email</label>
+                            <input v-model="modalContent.sale[0].email" disabled type="text" class="form-control enable-with-change" >
                         </div>
                     </div>
                     <div class="col-md-6" >
                         <div class="form-group">
                             <label for="userName">Telefone</label>
-                            <input v-model="modalContent.phone" disabled type="text" class="form-control enable-with-change" >
+                            <input v-model="modalContent.sale[0].phone" disabled type="text" class="form-control enable-with-change" >
                         </div>
                     </div>
-                    <div class="col-12" >
-                        <div class="form-group">
-                            <label for="userName">Email</label>
-                            <input v-model="modalContent.email" disabled type="text" class="form-control enable-with-change" >
-                        </div>
-                    </div>
-                    <div class="col-md-6" >
+                    <div class="col-md-12" >
                         <div class="form-group">
                             <label for="userName">Cadastrado em</label>
-                            <input v-model="modalContent.created_at" disabled type="text" class="form-control" >
+                            <input v-model="modalContent.sale[0].created_at" disabled type="text" class="form-control" >
                         </div>
                     </div>
-                    <div class="col-md-6" >
-                        <div class="form-group">
-                            <label for="userName">Ultima atualização</label>
-                            <input v-model="modalContent.updated_at" disabled type="text" class="form-control" >
-                        </div>
-                    </div>
+                </div>
+
+                <hr>
+
+                <div class="container" >
+                    <h3 class="text-center" >Produtos</h3>
+                    <w-grid 
+                        searchKey="name"
+                        sortKey="id"
+                        controllers='false' 
+                        searchControllers='false'
+                        :titles='["Id","Produto", "Descrição", "Marca", "Valor", "Quantidade", "Total Valor"]'
+                        :contents='modalContent.basket'
+                    ></w-grid>
                 </div>
             </div>
         </w-modal>
@@ -129,17 +142,20 @@
     import wGrid    from '../components/wGrid.vue'
     import wModal   from '../components/wModal.vue'
     export default {
-        name: 'pClients',
+        name: 'pSales',
         components: {
             wGrid
         },
         data(){
             return {
-                titles      : ['id', 'Nome', 'Email', 'Telefone'],
+                titles      : ['Id', 'Valor', 'Cliente', 'Email', 'Telefone', 'Data'],
                 contents    : [],
                 modal       : false,
                 modalTitle  : '',
-                modalContent: {},
+                modalContent: {
+                    sale    : [{}],
+                    basket  : []
+                },
                 saveBtn     : false,
                 alerts      : {
                     show    : false,
@@ -177,7 +193,7 @@
                             this.alerts.text    = 'Cliente cadastrado com sucesso.';
                             this.alerts.class   = 'alert-success';
 
-                            this.getClients();
+                            this.getSales();
                         }else{
                             this.alerts.show    = true;
                             this.alerts.text    = 'Erro ao cadastrar cliente.';
@@ -201,7 +217,7 @@
             },
 
             showModal   : function(data){
-                fetch(apiUrl + 'clients/' + data.id, {
+                fetch(apiUrl + 'sales/' + data.id, {
                     method: 'GET',
                     headers: {
                         'Content-Type'  : 'application/json',
@@ -213,7 +229,7 @@
                         if(responseJSON.status == true){
                             this.modalContent   = responseJSON.response;
                             this.modal          = true;
-                            this.modalTitle     = this.modalContent.name;
+                            this.modalTitle     = 'Venda para: ' + this.modalContent.sale[0].name;
                         }else{
                             console.log("status", "=>", responseJSON.response);
                         }
@@ -233,11 +249,11 @@
                 this.alerts.show    = false;
                 this.modalTitle     = '';
 
-                this.getClients();
+                this.getSales();
             },
 
-            getClients : function(){
-                fetch( apiUrl + 'clients/', {
+            getSales : function(){
+                fetch( apiUrl + 'sales/', {
                     method  : 'GET',
                     headers : {
                         'Content-Type'  : 'application/json',
@@ -303,7 +319,7 @@
             }
         },
         mounted(){
-            this.getClients();
+            this.getSales();
         }
     }
 </script>
