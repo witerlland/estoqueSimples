@@ -24,6 +24,7 @@ Vue.component('new-user-page', require('./pages/pNewUser').default);
 Vue.component('products-page', require('./pages/pProducts').default);
 Vue.component('clients-page', require('./pages/pClients').default);
 Vue.component('sales-page', require('./pages/pSales').default);
+Vue.component('new-sale-page', require('./pages/pSalesNew').default);
 
 // Components
 Vue.component('w-auth-form', require('./components/wAuthForm.vue').default);

@@ -4,7 +4,7 @@
             <div class="col-md-2" >
                 <div class="container" style="padding-bottom: 1.5rem;" >
                     <ul class="list-group">
-                        <a href="#" @click.prevent="newClientModal = true" class="list-group-item list-group-item-action active">
+                        <a href="/vendas/nova" class="list-group-item list-group-item-action active">
                             Nova venda.
                         </a>
                     </ul>
@@ -37,46 +37,9 @@
         </div>
 
         <w-modal
-            title="Novo produto"
-            :showModal='newClientModal'
-            :showSaveBtn='true'
-            v-on:saveAction='saveNew'
-            v-on:closeModal="closeModalNew"
-        >
-            <div class="container" >
-                <div>
-                    <div v-show="alerts.show" :class="alerts.class" class="alert alert-dismissible fade show" role="alert">
-                        {{alerts.text}}
-                    </div>
-                </div>
-                <div class="row" >
-                    <div class="col-12" >
-                        <div class="form-group">
-                            <label for="userName">Nome</label>
-                            <input v-model="newClient.name" type="text" class="form-control" >
-                        </div>
-                    </div>
-                    <div class="col-12" >
-                        <div class="form-group">
-                            <label for="userName">Email</label>
-                            <input v-model="newClient.email" type="text" class="form-control" >
-                        </div>
-                    </div>
-                    <div class="col-12" >
-                        <div class="form-group">
-                            <label for="userName">Telefone</label>
-                            <input v-model="newClient.phone" type="text" class="form-control" >
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </w-modal>
-
-        <w-modal
             :title="modalTitle"
             :showModal='modal'
             :showSaveBtn='saveBtn'
-            v-on:saveAction='saveChanges'
             v-on:closeModal="closeModal"
         >
             <div class="container" >
@@ -161,62 +124,11 @@
                     show    : false,
                     text    : '',
                     class   : ''
-                },
-                newClientModal     : false,
-                newClient          : {
-                    name        : '',
-                    phone       : '',
-                    email       : '',
                 }
             }
         },
         methods: {
-            saveNew     : function(){
-                var data = {
-                    "name"          : this.newClient.name,
-                    "email"         : this.newClient.email,
-                    "phone"         : this.newClient.phone
-                }
-
-                fetch( apiUrl + 'clients/createOrUpdate', {
-                    method  : 'POST',
-                    headers : {
-                        'Content-Type'  : 'application/json',
-                        'w-auth-token'  : wAuthToken
-                    },
-                    body    : JSON.stringify(data)
-                })
-                    .then(response      => (response.json()))
-                    .then(responseJSON  => {
-                        if(responseJSON.status == true){
-                            this.alerts.show    = true;
-                            this.alerts.text    = 'Cliente cadastrado com sucesso.';
-                            this.alerts.class   = 'alert-success';
-
-                            this.getSales();
-                        }else{
-                            this.alerts.show    = true;
-                            this.alerts.text    = 'Erro ao cadastrar cliente.';
-                            this.alerts.class   = 'alert-warning';
-                        }
-                    })
-                    .catch(response     => {
-                        this.alerts.show    = true;
-                        this.alerts.text    = 'Erro ao conectar ao servidor.';
-                        this.alerts.class   = 'alert-danger';
-                    });
-            },
-
-            closeModalNew   : function(){
-                this.newClient.name     = '';
-                this.newClient.email    = '';
-                this.newClient.phone    = '';
-
-                this.alerts.show    = false;
-                this.newClientModal = false;
-            },
-
-            showModal   : function(data){
+            showModal           : function(data){
                 fetch(apiUrl + 'sales/' + data.id, {
                     method: 'GET',
                     headers: {
@@ -237,7 +149,7 @@
                     .catch(error => (console.log('Error', '=>', error)));
             },
 
-            closeModal: function(){
+            closeModal          : function(){
                 var itens = document.getElementsByClassName('enable-with-change');
                 for (let index = 0; index < itens.length; index++) {
                     // const element = array[index];
@@ -252,7 +164,7 @@
                 this.getSales();
             },
 
-            getSales : function(){
+            getSales            : function(){
                 fetch( apiUrl + 'sales/', {
                     method  : 'GET',
                     headers : {
@@ -270,51 +182,6 @@
                     })
                     .catch(response     => {
                         console.log('Erro requisição', '=>', response.message);
-                    });
-            },
-
-            enableChanges: function(){
-                var itens = document.getElementsByClassName('enable-with-change');
-                for (let index = 0; index < itens.length; index++) {
-                    // const element = array[index];
-                    // let item = require.item(index).value;
-                    itens[index].disabled = false;
-                }
-                this.saveBtn = true;
-            },
-
-            saveChanges: function(){
-                var data = {
-                    "id"            : this.modalContent.id,
-                    "name"          : this.modalContent.name,
-                    "email"         : this.modalContent.email,
-                    "phone"         : this.modalContent.phone
-                }
-
-                fetch( apiUrl + 'clients/createOrUpdate', {
-                    method  : 'POST',
-                    headers : {
-                        'Content-Type'  : 'application/json',
-                        'w-auth-token'  : wAuthToken
-                    },
-                    body    : JSON.stringify(data)
-                })
-                    .then(response      => (response.json()))
-                    .then(responseJSON  => {
-                        if(responseJSON.status == true){
-                            this.alerts.show    = true;
-                            this.alerts.text    = 'Dados atualizados com sucesso.';
-                            this.alerts.class   = 'alert-success';
-                        }else{
-                            this.alerts.show    = true;
-                            this.alerts.text    = 'Erro ao atualizar dados.';
-                            this.alerts.class   = 'alert-warning';
-                        }
-                    })
-                    .catch(response     => {
-                        this.alerts.show    = true;
-                        this.alerts.text    = 'Erro ao conectar ao servidor.';
-                        this.alerts.class   = 'alert-danger';
                     });
             }
         },

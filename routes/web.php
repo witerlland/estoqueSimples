@@ -19,5 +19,6 @@ Route::group(['prefix' => '/', 'middleware' => 'auth'], function(){
 
     Route::get('/produtos', 'Dash\ProductsController@index')->name('products');
     Route::get('/clientes', 'Dash\ClientsController@index')->name('clients');
-    Route::get('/vendas', 'Dash\SalesController@index')->name('sales');
+    Route::get('/vendas', 'Dash\SalesController@index')->name('sales.index');
+    Route::get('/vendas/nova', 'Dash\SalesController@new')->name('sales.new');
 });

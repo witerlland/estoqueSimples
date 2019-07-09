@@ -18,6 +18,10 @@ class SalesController extends Controller{
         return view('pages.sales');
     }
 
+    public function new(){
+        return view('pages.newSale');
+    }
+
     /**
      * Abre a venda criando uma nova venda na tabela sel. 
     */
