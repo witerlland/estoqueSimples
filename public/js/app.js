@@ -41370,7 +41370,7 @@ var staticRenderFns = [
               "a",
               {
                 staticClass: "list-group-item list-group-item-action active",
-                attrs: { href: "public/vendas/nova" }
+                attrs: { href: "vendas/nova" }
               },
               [
                 _vm._v(

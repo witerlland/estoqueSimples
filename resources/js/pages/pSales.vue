@@ -4,7 +4,7 @@
             <div class="col-md-2" >
                 <div class="container" style="padding-bottom: 1.5rem;" >
                     <ul class="list-group">
-                        <a href="public/vendas/nova" class="list-group-item list-group-item-action active">
+                        <a href="vendas/nova" class="list-group-item list-group-item-action active">
                             Nova venda.
                         </a>
                     </ul>
