@@ -20,9 +20,8 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <script>
-        // let apiUrl = 'http://71af08636d8c.sn.mynetname.net:8080/api/'; // server
-        let apiUrl = 'http://localhost:8080/api/'; // Local
-        // let apiUrl = 'http://joincloud.com.br/public/'; // server
+        let apiUrl = 'http://localhost:8000/api/'; // Local
+        // let apiUrl = 'urlServidor'; // server
         let wAuthToken = '<?php echo (Auth::check() ? Auth::user()->remember_token : ""); ?>';
     </script>
 </head>
