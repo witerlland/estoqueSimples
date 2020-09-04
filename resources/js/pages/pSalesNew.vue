@@ -1,11 +1,11 @@
 <template>
-    <div class="container-fluid">
-        <div class="row" >
-            <div class="col-md-12" >
-                <div v-show="alerts.show" :class="alerts.class" class="alert alert-dismissible fade show" role="alert">
-                    {{alerts.text}}
-                </div>
+    <div class="container-fluid py-4">
+        <div class="container">
+            <div v-show="alerts.show" :class="alerts.class" class="alert alert-dismissible fade show" role="alert">
+                {{alerts.text}}
             </div>
+        </div>
+        <div class="row" >
             <div class="col-md-4" >
                 <div class="row" >
                     <div class="col-12" >
@@ -26,7 +26,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <a href="#" @click.prevent="addProductToBasket()" class="btn btn-primary btn-block" >Adicionar produto</a>
+                        <a href="#" @click.prevent="addProductToBasket()" class="btn btn-dark btn-block" >Adicionar produto</a>
                     </div>
 
                     <div class="col-md-6" >
@@ -59,7 +59,7 @@
                 </div>
                 <div class="row" > 
                     <div class="col-12">
-                        <a href="#" @click.prevent="closeSale()" class="btn btn-primary btn-block" >Finalizar compra</a>
+                        <a href="#" @click.prevent="closeSale()" class="btn btn-dark btn-block" >Finalizar compra</a>
                     </div>
                 </div>
             </div>

@@ -6,3 +6,65 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+html, body, #app{
+    height: 100%;
+    min-height: 100%;
+}
+
+.bg-none{
+    background: none;
+}
+
+.w-auth-form{
+    width: 480px;
+    height: auto;
+    display: flex;
+    margin: auto;
+}
+
+    form{
+        width: 100%;
+        height: auto;
+        padding: 15px;
+        margin: 0;
+        box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+        background-color: #FFF;
+    }
+
+.w-required-empty{
+    border: 1px solid red;
+}
+
+@media (max-width: 640px){
+    .w-auth-form{
+        width: 80%;
+        height: auto;
+        display: flex;
+        margin: auto;
+    }
+}
+
+#wb-side-menu #sidebar{
+    position: fixed;
+    left: -200px;
+    transition: all 0.2s ease-in;
+    top: 0;
+    bottom: 0;
+    width: 200px;
+    z-index: 9999;
+}
+#wb-side-menu #sidebar{
+    padding: 0;
+}
+
+#wb-side-menu.active #sidebar{
+    transition: all 0.2s ease-out;
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 200px;
+    z-index: 9999;
+}

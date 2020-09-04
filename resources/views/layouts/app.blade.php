@@ -27,21 +27,16 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm fixed-top">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    {{ strtoupper(config('app.name', 'Laravel')) }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-
-                    </ul>
-
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
@@ -56,20 +51,10 @@
                             @endif
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('clients') }}">
-                                    Clientes
+                                <a href="#" class="nav-link" onClick="toggleMenu()">
+                                    Menu
                                 </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('products')}}" >
-                                    Produtos
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('sales.index') }}" >
-                                    Vendas
-                                </a>
-                            </li>
+                            </li> 
                             <li class="nav-item">
                                 <a class="nav-link" href="#" >
                                     {{ Auth::user()->name }}
@@ -91,10 +76,41 @@
                 </div>
             </div>
         </nav>
-
-        <main class="py-4">
+        @guest
             @yield('content')
-        </main>
+        @else
+            <div class="h-100" id="wb-side-menu" >
+                <div class="bg-dark py-3" id="sidebar" role="navigation">
+                    <h4 class="text-white text-center" >
+                        {{ strtoupper(Auth::user()->name) }}
+                    </h4>
+                    <div class="list-group list-group-flush py-2">
+                        <a class="list-group-item bg-none text-decoration-none text-white" href="{{ url('/') }}">
+                            Ínicio
+                        </a>
+                        <a class="list-group-item bg-none text-decoration-none text-white" href="{{ route('clients') }}">
+                            Clientes
+                        </a>
+                        <a class="list-group-item bg-none text-decoration-none text-white" href="{{ route('products')}}" >
+                            Produtos
+                        </a>
+                        <a class="list-group-item bg-none text-decoration-none text-white" href="{{ route('sales.index') }}" >
+                            Vendas
+                        </a>
+                    </div>
+                </div>
+                <div class=" container py-5">
+                    @yield('content')
+                </div>
+            </div>
+        @endguest
     </div>
+
+    <script>
+        function toggleMenu(){
+            let menu = document.getElementById('wb-side-menu');
+            menu.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>

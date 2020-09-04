@@ -1,9 +1,9 @@
 <template>
-    <section class="w-auth-form">
-        <form id="w-form" >
+    <section class="w-auth-form py-5">
+        <form id="w-form" class="border border-dark" >
             <header>
                 <h3>{{title}}</h3>
-                <hr>
+                <hr class="border-dark" >
             </header>
             <div>
                 <div class="container" >
@@ -16,10 +16,10 @@
             </div>
             <footer class="row" >
                 <div class="col-6 text-left ">
-                    <a href="#" @click.prevent="clearForm()" class="btn btn-sm btn-outline-danger">{{buttons.firstAction}}</a>
+                    <a href="#" @click.prevent="firstAction()" v-on:keydown.enter="firstAction()" class="btn btn-block btn-outline-dark">{{buttons.secondAction}}</a>
                 </div>
                 <div class="col-6 text-right">
-                    <a href="#" @click.prevent="firstAction()" v-on:keydown.enter="firstAction()" class="btn btn-sm btn-outline-primary">{{buttons.secondAction}}</a>
+                    <a href="#" @click.prevent="clearForm()" class="btn btn-block btn-outline-danger">{{buttons.firstAction}}</a>
                 </div>
             </footer>
         </form>
@@ -80,35 +80,4 @@
     }
 </script>
 <style>
-    .w-auth-form{
-        width: 480px;
-        height: auto;
-        display: flex;
-        margin: auto;
-    }
-
-        form{
-            width: 100%;
-            height: auto;
-            padding: 15px;
-            margin: 0;
-
-            border: 1px solid #007bffb6 ;
-            border-radius: 2px;
-            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
-            background-color: #FFF;
-        }
-
-    .w-required-empty{
-        border: 1px solid red;
-    }
-
-    @media (max-width: 640px){
-        .w-auth-form{
-            width: 80%;
-            height: auto;
-            display: flex;
-            margin: auto;
-        }
-    }
 </style>

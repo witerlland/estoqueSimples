@@ -1,37 +1,38 @@
 <template>
-    <div class="container-fluid" >
-        <div class="row" >
-            <div class="col-md-2" >
-                <div class="container" style="padding-bottom: 1.5rem;" >
-                    <ul class="list-group">
-                        <a href="#" @click.prevent="newProductModal = true" class="list-group-item list-group-item-action active">
-                            Novo produto.
-                        </a>
-                    </ul>
+    <div class="container-fluid py-4" >
+        <div class="container">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    Produtos
+                </li>
+            </ol>
+        </div>
+        <div class="container">
+            <div class="row" >
+                <div class="col-md-1" >
+                    <a 
+                        href="#" 
+                        @click.prevent="newProductModal = true" 
+                        class="btn btn-block btn-outline-dark">
+                        +
+                    </a>
                 </div>
-            </div>
-            <div class="col-md-10">
-                <div class="container">
-                    <!-- Breadcrumbs-->
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="/">Dashboard</a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            Produtos
-                        </li>
-                    </ol>
-                </div>
-                <div class="container" >
-                    <w-grid 
-                        searchKey="name"
-                        sortKey="id"
-                        controllers='true' 
-                        searchControllers='true'
-                        :titles='titles'
-                        :contents='contents'
-                        v-on:showModal="showModal"
-                    ></w-grid>
+                <div class="col-md-11">
+                    <div class="container" >
+                        <w-grid 
+                            searchKey="name"
+                            sortKey="id"
+                            controllers='true' 
+                            searchControllers='true'
+                            :titles='titles'
+                            :contents='contents'
+                            v-on:showModal="showModal"
+                        ></w-grid>
+                    </div>
                 </div>
             </div>
         </div>

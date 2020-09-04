@@ -1,5 +1,5 @@
 <template>
-    <section class="container-fluid" >
+    <section class="container-fluid py-5" >
         <w-auth-form
             title="Cadastro de usuário"
             :alerts="alerts"

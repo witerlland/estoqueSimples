@@ -1,28 +1,28 @@
 <template>
-    <div class="container-fluid" >
-        <div class="row" >
-            <div class="col-md-2" >
-                <div class="container" style="padding-bottom: 1.5rem;" >
-                    <ul class="list-group">
-                        <a href="#" @click.prevent="newClientModal = true" class="list-group-item list-group-item-action active">
-                            Novo cliente.
-                        </a>
-                    </ul>
+    <div class="container-fluid py-4" >
+        <div class="container">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    Clientes
+                </li>
+            </ol>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-1">
+                    <a 
+                        href="#" 
+                        @click.prevent="newClientModal = true"
+                        class="btn btn-outline-dark btn-block"
+                    >
+                        +
+                    </a>
                 </div>
-            </div>
-            <div class="col-md-10">
-                <div class="container">
-                    <!-- Breadcrumbs-->
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="/">Dashboard</a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            Clientes
-                        </li>
-                    </ol>
-                </div>
-                <div class="container" >
+                <div class="col-md-11">
                     <w-grid 
                         searchKey="name"
                         sortKey="id"
